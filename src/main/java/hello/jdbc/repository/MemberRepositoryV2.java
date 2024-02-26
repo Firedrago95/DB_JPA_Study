@@ -111,10 +111,12 @@ public class MemberRepositoryV2 {
     }
 
     public void update(Connection con, String memberId, int money) throws SQLException {
-        String sql = "update member set money = ? where memberId = ?";
+        String sql = "update member set money = ? where member_id = ?";
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, money);
+            pstmt.setString(2, memberId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             log.error("db error", e);

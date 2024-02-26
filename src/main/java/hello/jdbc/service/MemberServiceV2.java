@@ -39,7 +39,7 @@ public class MemberServiceV2 {
 
         memberRepository.update(con, fromId, fromMember.getMoney() - money);
         validation(toMember);
-        memberRepository.update(con, toId, toMember.getMoney() - money);
+        memberRepository.update(con, toId, toMember.getMoney() + money);
     }
 
     private void release(Connection con) {
