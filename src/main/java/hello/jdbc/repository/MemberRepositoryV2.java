@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
+/**
+ * 트랜잭션 도입
+ */
 @Slf4j
 public class MemberRepositoryV2 {
 

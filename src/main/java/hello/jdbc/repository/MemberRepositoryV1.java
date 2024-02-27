@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
+/**
+ * DataSource 도입
+ */
 @Slf4j
 public class MemberRepositoryV1 {
 
