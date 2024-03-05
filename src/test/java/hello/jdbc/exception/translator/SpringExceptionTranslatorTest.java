@@ -56,7 +56,8 @@ public class SpringExceptionTranslatorTest {
             assertThat(e.getErrorCode()).isEqualTo(42122);
 
             //org.springframework.jdbc.support.sql-error-codes.xml
-            SQLExceptionTranslator exTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+            SQLExceptionTranslator exTranslator =
+                    new SQLErrorCodeSQLExceptionTranslator(dataSource);
 
             //org.springframework.jdbc.BadSqlGrammarException
             DataAccessException resultEx = exTranslator.translate("select", sql, e);
