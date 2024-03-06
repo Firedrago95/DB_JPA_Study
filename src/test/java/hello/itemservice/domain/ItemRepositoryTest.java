@@ -18,12 +18,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
     ItemRepository itemRepository;
 
+    //트랜잭션 관련 코드
+/*
     @Autowired
     PlatformTransactionManager transactionManager;
     TransactionStatus status;
@@ -33,6 +36,7 @@ class ItemRepositoryTest {
         //트랜잭션 시작
         status = transactionManager.getTransaction(new DefaultTransactionDefinition());
     }
+*/
 
     @AfterEach
     void afterEach() {
@@ -40,7 +44,7 @@ class ItemRepositoryTest {
         if (itemRepository instanceof MemoryItemRepository) {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
-        transactionManager.rollback(status);
+//        transactionManager.rollback(status);
     }
 
     @Test
