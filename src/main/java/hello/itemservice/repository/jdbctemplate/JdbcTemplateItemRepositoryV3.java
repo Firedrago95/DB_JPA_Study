@@ -43,8 +43,8 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
 
     @Override
     public Item save(Item item) {
-        BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(item);
-        Number key = jdbcInsert.execute(param);
+        SqlParameterSource param = new BeanPropertySqlParameterSource(item);
+        Number key = jdbcInsert.executeAndReturnKey(param);
         item.setId(key.longValue());
         return item;
     }
@@ -79,28 +79,23 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
     public List<Item> findAll(ItemSearchCond cond) {
         Integer maxPrice = cond.getMaxPrice();
         String itemName = cond.getItemName();
-
         SqlParameterSource param = new BeanPropertySqlParameterSource(cond);
-
         String sql = "select id, item_name, price, quantity from item";
         //동적 쿼리
         if (StringUtils.hasText(itemName) || maxPrice != null) {
             sql += " where";
         }
-
         boolean andFlag = false;
         if (StringUtils.hasText(itemName)) {
             sql += " item_name like concat('%',:itemName,'%')";
             andFlag = true;
         }
-
         if (maxPrice != null) {
             if (andFlag) {
                 sql += " and";
             }
             sql += " price <= :maxPrice";
         }
-
         log.info("sql={}", sql);
         return template.query(sql, param, itemRowMapper());
     }
