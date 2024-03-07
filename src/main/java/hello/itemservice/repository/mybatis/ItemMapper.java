@@ -14,7 +14,8 @@ public interface ItemMapper {
 
     void save(Item item);
 
-    void update(@Param("id") Long id, @Param("updateParam") ItemUpdateDto updateParam);
+    void update(@Param("id") Long id,
+                @Param("updateParam") ItemUpdateDto updateParam);
 
     Optional<Item> findById(Long id);
 
