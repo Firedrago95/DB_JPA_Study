@@ -15,10 +15,13 @@ public class JpaMain {
 
         try {
             // 저장
-            Member member1 = new Member(150L, "A");
+            Member member1 = new Member(200L, "member200");
             em.persist(member1);
 
-            // 영속 엔티티 조회
+            // 플러시 강제호출
+            em.flush();
+            System.out.println("==============");
+
             // 트랜잭션 커밋
             tx.commit();
         } catch (Exception e) {
