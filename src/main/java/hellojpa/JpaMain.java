@@ -14,12 +14,13 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 저장
-            Member member1 = new Member(200L, "member200");
-            em.persist(member1);
+            // 영속
+            Member member = em.find(Member.class, 200L);
+            member.setName("AAAAA");
 
-            // 플러시 강제호출
-            em.flush();
+            // 준영속 상태로 만들기
+            em.detach(member);
+
             System.out.println("==============");
 
             // 트랜잭션 커밋
