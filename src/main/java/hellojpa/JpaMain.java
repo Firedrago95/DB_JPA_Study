@@ -14,9 +14,19 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //code
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("HelloJPA");
+
+            // 비영속
+            Member member = new Member();
+            member.setId(101L);
+            member.setName("HelloJPA");
+
+            // 영속
+            em.persist(member);
+
+            // 1차 캐시에서 조회
+            Member findMember = em.find(Member.class, 101L);
+            System.out.println("findMember.id = " + findMember.getName());
+            System.out.println("findMember.name = " + findMember.getName());
 
             // 트랜잭션 커밋
             tx.commit();
