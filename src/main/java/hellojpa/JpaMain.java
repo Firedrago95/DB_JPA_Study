@@ -14,13 +14,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 쓰기지연
+            // 저장
             Member member1 = new Member(150L, "A");
-            Member member2 = new Member(160L, "B");
-
             em.persist(member1);
-            em.persist(member2);
 
+            // 영속 엔티티 조회
+            Member memberA = em.find(Member.class, 150L);
+
+            // 영속 엔티티 데이터 수정
+            memberA.setName("zzzz");
 
             // 트랜잭션 커밋
             tx.commit();
