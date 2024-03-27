@@ -14,15 +14,6 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 영속
-            Member member = em.find(Member.class, 200L);
-            member.setName("AAAAA");
-
-            // 준영속 상태로 만들기
-            em.detach(member);
-
-            System.out.println("==============");
-
             // 트랜잭션 커밋
             tx.commit();
         } catch (Exception e) {
