@@ -1,12 +1,12 @@
-package hellojpa;
+package hellojpa.ex;
 
 import jakarta.persistence.*;
 import java.util.Date;
 
-@Entity
+
 public class Member {
 
-    @Id
+    @Id @GeneratedValue(strategy  = GenerationType.AUTO)
     private Long id;
     @Column(name = "name")
     private String username;
