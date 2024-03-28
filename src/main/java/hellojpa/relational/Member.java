@@ -2,7 +2,7 @@ package hellojpa.relational;
 
 import jakarta.persistence.*;
 
-@Entity
+
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +37,8 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);
     }
 }

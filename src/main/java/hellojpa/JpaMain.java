@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.jpabook.jpashop.domain.Order;
+import hellojpa.jpabook.jpashop.domain.OrderItem;
 import hellojpa.relational.Member;
 import hellojpa.relational.Team;
 import jakarta.persistence.*;
@@ -19,26 +21,8 @@ public class JpaMain {
 
         try {
 
-            // 팀 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("member1");
-            // JPA가 알아서 FK 값으로 사용
-            member.setTeam(team);
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println(member);
-            }
+            Order order = new Order();
+            order.addOrderItem(new OrderItem());
 
             // 트랜잭션 커밋
             tx.commit();
