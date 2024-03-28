@@ -16,18 +16,22 @@ public class JpaMain {
         tx.begin();
 
         try {
+
+            // 팀 저장
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);
 
             Member member = new Member();
-            member.setUserName("member1");
-            member.setTeamId(team.getId());
+            member.setUsername("member1");
+            // JPA가 알아서 FK 값으로 사용
+            member.setTeam(team);
             em.persist(member);
 
             Member findMember = em.find(Member.class, member.getId());
-            Long findTeamId = findMember.getTeamId();
-            Team findTeam = em.find(Team.class, findTeamId);
+            // 바로 객체를 꺼낸다.
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
 
             // 트랜잭션 커밋
             tx.commit();
