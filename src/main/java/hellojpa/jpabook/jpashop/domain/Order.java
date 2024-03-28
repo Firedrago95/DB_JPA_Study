@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+
 @Table(name = "ORDERS")
 public class Order {
 

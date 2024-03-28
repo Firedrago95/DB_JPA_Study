@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.relational.Member;
+import hellojpa.relational.Team;
 import jakarta.persistence.*;
 
 public class JpaMain {
@@ -14,6 +16,19 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUserName("member1");
+            member.setTeamId(team.getId());
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            Long findTeamId = findMember.getTeamId();
+            Team findTeam = em.find(Team.class, findTeamId);
+
             // 트랜잭션 커밋
             tx.commit();
         } catch (Exception e) {
