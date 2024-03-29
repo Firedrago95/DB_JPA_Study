@@ -2,7 +2,7 @@ package hellojpa.jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 
-@Entity
+
 public class OrderItem {
 
     @Id @GeneratedValue
