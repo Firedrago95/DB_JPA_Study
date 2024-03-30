@@ -7,10 +7,9 @@ import java.util.List;
 
 @Entity
 // 상속 전략을 구현하는 전략 설정 (단일테이블, 조인 등)
-@Inheritance(strategy = InheritanceType.JOINED)
-// DTYPE 컬럼에 자식 엔티티명이 들어감 자식에서는 @DiscriminatorValue(이름) 으로 컬럼값 설정 가능
-@DiscriminatorColumn
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// Item만 단독으로 저장할 경우가 없으므로 추상클래스
+public abstract class Item {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
