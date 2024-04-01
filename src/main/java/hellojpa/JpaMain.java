@@ -1,10 +1,7 @@
 package hellojpa;
 
 import hellojpa.jpabook.jpashop.domain.Book;
-import hellojpa.jpabook.jpashop.domain.Order;
-import hellojpa.jpabook.jpashop.domain.OrderItem;
-import hellojpa.relational.Member;
-import hellojpa.relational.Team;
+import hellojpa.jpabook.jpashop.domain.Member;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,11 +19,17 @@ public class JpaMain {
 
         try {
 
-            Book book = new Book();
-            book.setName("JPA");
-            book.setAuthor("김영한");
+            Member member = new Member();
+            member.setName("member1");
+            em.persist(member);
 
-            em.persist(book);
+            em.flush();
+            em.clear();
+
+            Member refMember = em.getReference(Member.class, member.getId());
+            System.out.println("refMember = " + refMember.getClass());
+
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
 
             // 트랜잭션 커밋
             tx.commit();
