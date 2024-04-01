@@ -1,7 +1,9 @@
 package hellojpa;
 
 import hellojpa.jpabook.jpashop.domain.Book;
+import hellojpa.jpabook.jpashop.domain.Child;
 import hellojpa.jpabook.jpashop.domain.Member;
+import hellojpa.jpabook.jpashop.domain.Parent;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,18 +20,14 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Member member = new Member();
-            member.setName("member1");
-            em.persist(member);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
-
-            Member refMember = em.getReference(Member.class, member.getId());
-            System.out.println("refMember = " + refMember.getClass());
-
-            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+            em.persist(parent);
 
             // 트랜잭션 커밋
             tx.commit();
