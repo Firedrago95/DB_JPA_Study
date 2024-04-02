@@ -4,6 +4,7 @@ import hellojpa.jpabook.jpashop.domain.*;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -17,16 +18,36 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Address address = new Address("city", "street", "10000");
-
             Member member = new Member();
             member.setName("member1");
-            member.setHomeAddress(address);
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+
             em.persist(member);
 
-            // 불변객체 Address 이므로 객체를 새로 생성해서 값 수정한다.
-            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
-            member.setHomeAddress(newAddress);
+            em.flush();
+            em.clear();
+
+            System.out.println("============================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            // 값타입 컬렉션은 지연로딩 된다.
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address = " + address.getCity());
+            }
+            // 값타입 컬렉션은 지연로딩 된다.
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
 
             tx.commit();
         } catch (Exception e) {
