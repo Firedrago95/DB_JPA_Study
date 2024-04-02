@@ -1,9 +1,6 @@
 package hellojpa;
 
-import hellojpa.jpabook.jpashop.domain.Book;
-import hellojpa.jpabook.jpashop.domain.Child;
-import hellojpa.jpabook.jpashop.domain.Member;
-import hellojpa.jpabook.jpashop.domain.Parent;
+import hellojpa.jpabook.jpashop.domain.*;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,22 +17,17 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Address address = new Address("city", "street", "10000");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            Member member = new Member();
+            member.setName("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
 
-            em.persist(parent);
+            // 불변객체 Address 이므로 객체를 새로 생성해서 값 수정한다.
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+            member.setHomeAddress(newAddress);
 
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-
-            // 트랜잭션 커밋
             tx.commit();
         } catch (Exception e) {
             // 문제 있으면 롤백
