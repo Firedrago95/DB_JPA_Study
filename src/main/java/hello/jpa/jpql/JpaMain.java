@@ -30,7 +30,7 @@ public class JpaMain {
             em.clear();
 
             // inner join
-            String query = "select m from Member m left join m.team t";
+            String query = "select m from Member m, Team t where m.username = t.name ";
             List<Member> result = em.createQuery(query, Member.class)
                     .getResultList();
 
