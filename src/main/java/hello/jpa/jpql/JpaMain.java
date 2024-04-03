@@ -31,12 +31,14 @@ public class JpaMain {
             Member singleResult = em.createQuery("select m from Member m where m.id = 1", Member.class)
                     .getSingleResult();
 
-            // 파라미터 바인딩
+            // 파라미터 바인딩 이름 바인딩을 사용하자
             em.createQuery("select m from Member m where m.username = :username", Member.class)
                     .setParameter("username", "member1");
-
+            // 웬만하면 쓰지말자 (위치 바뀌면 오류 가능성)
             em.createQuery("select m from Member m where m.username = :username", Member.class)
                     .setParameter(1, "member1");
+
+            //
 
             tx.commit();
         } catch (Exception e) {
