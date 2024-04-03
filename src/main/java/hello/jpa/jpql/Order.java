@@ -3,6 +3,7 @@ package hello.jpa.jpql;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ORDERS")
 public class Order {
 
     @Id
