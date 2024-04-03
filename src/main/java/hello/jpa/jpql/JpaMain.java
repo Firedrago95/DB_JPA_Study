@@ -1,9 +1,6 @@
 package hello.jpa.jpql;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -17,7 +14,14 @@ public class JpaMain {
         try {
             Member member = new Member();
             member.setUsername("member1");
+            member.setAge(10);
             em.persist(member);
+
+            // 반환 타입이 명확할 때 (TypeQuery< >)
+            TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
+            TypedQuery<String> query2 = em.createQuery("select m.username from Member m", String.class);
+            // 반환 타입이 명확하지 않을 때 (Query)
+            Query query = em.createQuery("select m.username, m.age from Member m");
 
             tx.commit();
         } catch (Exception e) {
