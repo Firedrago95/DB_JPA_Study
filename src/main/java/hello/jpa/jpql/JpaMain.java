@@ -31,6 +31,13 @@ public class JpaMain {
             Member singleResult = em.createQuery("select m from Member m where m.id = 1", Member.class)
                     .getSingleResult();
 
+            // 파라미터 바인딩
+            em.createQuery("select m from Member m where m.username = :username", Member.class)
+                    .setParameter("username", "member1");
+
+            em.createQuery("select m from Member m where m.username = :username", Member.class)
+                    .setParameter(1, "member1");
+
             tx.commit();
         } catch (Exception e) {
             // 문제 있으면 롤백
