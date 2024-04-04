@@ -14,23 +14,25 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Member member1 = new Member();
+            member1.setUsername("관리자1");
+            em.persist(member1);
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-
-            member.setTeam(team);
-
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("관리자2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            String query = "select coalesce(m.username, '이름 없는 회원') from Member m";
-            em.createQuery(query);
+            String query = "select m.team From Member m";
+
+            List<Team> result = em.createQuery(query, Team.class)
+                    .getResultList();
+
+            for (Team s : result) {
+                System.out.println("s = " + s);
+            }
 
             tx.commit();
         } catch (Exception e) {
