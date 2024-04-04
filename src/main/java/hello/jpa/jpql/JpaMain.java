@@ -29,11 +29,14 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // Enum 조회시에는 패키지명을 포함해야한다.
-            String query = "select m.username, 'HELLO', true from Member m" +
-                           "where m.type = jpql.MemberType.ADMIN";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
+            String query =
+                    "select" +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end" +
+                    "from Member m";
+            em.createQuery(query);
 
             tx.commit();
         } catch (Exception e) {
