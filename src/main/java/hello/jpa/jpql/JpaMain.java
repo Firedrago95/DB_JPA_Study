@@ -42,14 +42,14 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // From 절에서 명시적 조인으로 별칭을 얻으면 별칭으로 탐색가능
-            String query = "select m From Member m join fetch m.team";
+            // 컬렉션 페치 조인
+            String query = "select t From Team t join fetch t.members";
 
-            List<Member> result = em.createQuery(query, Member.class)
+            List<Team> result = em.createQuery(query, Team.class)
                     .getResultList();
 
-            for (Member member : result) {
-                System.out.println("member = " + member.getUsername() + ", " +member.getTeam().getName());
+            for (Team team : result) {
+                System.out.println("member = " + team.getName() + "|" +team.getMembers().size());
             }
 
             tx.commit();
