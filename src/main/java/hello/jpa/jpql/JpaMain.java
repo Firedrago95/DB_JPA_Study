@@ -29,10 +29,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // inner join
-            String query = "select m from Member m left join m.team t on t.name = :name";
+            // Enum 조회시에는 패키지명을 포함해야한다.
+            String query = "select m.username, 'HELLO', true from Member m" +
+                           "where m.type = jpql.MemberType.ADMIN";
             List<Member> result = em.createQuery(query, Member.class)
-                    .setParameter("name", "A")
                     .getResultList();
 
             tx.commit();
