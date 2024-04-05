@@ -39,13 +39,13 @@ public class JpaMain {
             member3.setTeam(teamB);
             em.persist(member3);
 
-            em.flush();
-            em.clear();
-
+            // 영속성 컨텍스트 무시, DB 직접 쿼리 -> 데이터 정합성 문제 (객체와 DB)
+            // Flush 자동 호출
             int resultCount = em.createQuery("update Member m set m.age = 20")
                     .executeUpdate();
 
-            System.out.println("resultCount = " + resultCount);
+            // 벌크연산을 먼저실행 또는 벌크연산 수행후 컨텍스트 초기화
+            em.clear();
 
             tx.commit();
         } catch (Exception e) {
