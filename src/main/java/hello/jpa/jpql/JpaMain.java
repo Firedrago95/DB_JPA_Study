@@ -42,14 +42,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 컬렉션 페치 조인
-            String query = "select t From Team t join fetch t.members";
-
-            List<Team> result = em.createQuery(query, Team.class)
+            List<Member> resultList = em.createNamedQuery("Member.findByUserName", Member.class)
+                    .setParameter("username", "회원1")
                     .getResultList();
 
-            for (Team team : result) {
-                System.out.println("member = " + team.getName() + "|" +team.getMembers().size());
+            for (Member member : resultList) {
+                System.out.println("member = " + member);
             }
 
             tx.commit();
