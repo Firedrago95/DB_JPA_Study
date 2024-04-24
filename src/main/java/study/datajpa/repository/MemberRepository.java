@@ -1,5 +1,8 @@
 package study.datajpa.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +34,20 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 컬렉션 파라미터 바인딩
     @Query("select m from Member m where m.username in :names")
     List<Member> findByNames(@Param("names") Collection<String> names);
+
+    /**
+     * 페이징 쿼리는 반환타입에 따라 효과가 달라진다.
+     *
+     * 총 페이지 없이, limit에 한개 추가로 가져옴, 모바일 더보기 환경등에서 사용
+     * Slice<Member> findByAge(int age, Pageable pageable);
+     *
+     * 그냥 페이징 기능 필요없고, 데이터만 받아오고 싶다.
+     * List<Member> findByAge(int age, Pageable pageable);
+     */
+
+    // 카운트 쿼리 최적화 할 수 있다.
+    @Query(value = "select m from Member m left join m.team t",
+            countQuery = "select count(m) from Member m")
+    Page<Member> findByAge(int age, Pageable pageable);
+
 }
