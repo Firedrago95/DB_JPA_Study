@@ -1,5 +1,6 @@
 package study.datajpa.repository;
 
+import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -114,6 +115,9 @@ public class MemberRepositoryTest {
 
         // when
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+//        API 반환할때 DTO로 변환하는 방법
+//        page.map(member -> new MemberDto(member.getId(), member.getUsername()))
 
         // then
         List<Member> content = page.getContent();
