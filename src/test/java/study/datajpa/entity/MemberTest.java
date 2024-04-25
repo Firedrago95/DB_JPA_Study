@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class MemberTest {
 
     @PersistenceContext
@@ -23,7 +24,6 @@ class MemberTest {
     MemberRepository memberRepository;
 
     @Test
-    @Transactional
     @Rollback(value = false)
     void testEntity() {
         Team teamA = new Team("teamA");
@@ -72,6 +72,8 @@ class MemberTest {
 
         // then
         System.out.println("findMember.createdDate = " + findMember.getCreatedDate());
-        System.out.println("findMember.updatedDate = " + findMember.getUpdatedDate());
+        System.out.println("findMember.updatedDate = " + findMember.getLastModifiedDate());
+        System.out.println("findMember.createdBy = " + findMember.getCreatedBy());
+        System.out.println("findMember.updatedBy = " + findMember.getLastModifiedBy());
     }
 }
