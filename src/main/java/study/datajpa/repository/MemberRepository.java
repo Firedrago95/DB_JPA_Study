@@ -78,4 +78,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> , MemberRe
     // 변경감지 안쓴다. 스냅샷을 안만들기 위한 최적화
     @QueryHints(value = {@QueryHint(name = "org.hibernate.readOnly", value = "true")})
     Member findReadOnlyByUsername(String username);
+
+    List<UsernameOnlyDto> findProjectionsByUsername(@Param("username")String username);
 }
