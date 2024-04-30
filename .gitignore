@@ -21,6 +21,7 @@ bin/
 ### IntelliJ IDEA ###
 application.properties
 *.yml
+ **/application.yml
 
 .idea
 *.iws
