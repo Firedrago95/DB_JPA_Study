@@ -20,9 +20,12 @@ public class QuerydslBasicTest {
 
     @Autowired
     EntityManager em;
+    JPAQueryFactory queryFactory;
 
     @BeforeEach
     void before() {
+        queryFactory = new JPAQueryFactory(em);
+
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
         em.persist(teamA);
@@ -54,7 +57,6 @@ public class QuerydslBasicTest {
 
     @Test
     void startQuerydsl() {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QMember m = new QMember("m");
 
         Member findMember = queryFactory
