@@ -2,6 +2,8 @@ package study.querydsl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
@@ -58,7 +62,7 @@ public class QuerydslBasicTest {
     void startJPQL() {
         String qlString =
                 "select m from Member m " +
-                "where m.username = :username";
+                        "where m.username = :username";
 
         Member findMember = em.createQuery(qlString, Member.class)
                 .setParameter("username", "member1")
@@ -274,7 +278,7 @@ public class QuerydslBasicTest {
      * 예) 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
      * JPQL: SELECT m, t FROM Member m LEFT JOIN m.team t on t.name = 'teamA'
      * SQL: SELECT m.*, t.* FROM Member m LEFT JOIN Team t ON m.TEAM_ID=t.id and
-     t.name='teamA'
+     * t.name='teamA'
      */
     @Test
     void join_on_filtering() throws Exception {
@@ -506,4 +510,63 @@ public class QuerydslBasicTest {
             System.out.println("s = " + s);
         }
     }
+
+    @Test
+    void findDtoBySetter() {
+        List<MemberDto> result = queryFactory
+                .select(Projections.bean(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    void findDtoByField() {
+        List<MemberDto> result = queryFactory
+                .select(Projections.fields(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    void findDtoByConstructor() {
+        List<MemberDto> result = queryFactory
+                .select(Projections.constructor(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    void findUserDto() {
+        QMember memberSub = new QMember("memberSub");
+
+        List<UserDto> fetch = queryFactory
+                .select(Projections.fields(UserDto.class,
+                        member.username.as("name"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(memberSub.age.max())
+                                        .from(memberSub), "age")
+                        )
+                ).from(member)
+                .fetch();
+    }
+
 }
