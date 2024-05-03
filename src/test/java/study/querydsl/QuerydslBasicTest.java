@@ -610,5 +610,32 @@ public class QuerydslBasicTest {
                 .fetch();
     }
 
+    @Test
+    void 동적쿼리_WhereParam() throws Exception {
+        String username = "member1";
+        Integer ageParam = 10;
 
+        List<Member> result = searchMember2(username, ageParam);
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    private List<Member> searchMember2(String userCond, Integer ageCond) {
+        return queryFactory
+                .selectFrom(member)
+                .where(allEq(userCond, ageCond))
+                .fetch();
+    }
+
+    private BooleanExpression usernameEq(String userCond) {
+        return userCond != null ? member.username.eq(userCond) : null;
+    }
+
+    private BooleanExpression ageEq(Integer ageCond) {
+        return ageCond != null ? member.age.eq(ageCond) : null;
+    }
+
+    // 메서드를 다른 쿼리에서도 재활용 할 수 있다. (장점)
+    private BooleanExpression allEq(String usernameCond, Integer ageCond) {
+        return usernameEq(usernameCond).and(ageEq(ageCond));
+    }
 }
