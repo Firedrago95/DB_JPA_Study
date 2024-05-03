@@ -112,11 +112,11 @@ public class MemberJpaRepository {
     }
 
     private BooleanExpression usernameEq(String username) {
-        return isEmpty(username) ? member.username.eq(username) : null;
+        return hasText(username) ? member.username.eq(username) : null;
     }
 
     private BooleanExpression teamNameEq(String teamName) {
-        return isEmpty(teamName) ? member.team.name.eq(teamName) : null;
+        return hasText(teamName) ? member.team.name.eq(teamName) : null;
     }
 
     private BooleanExpression ageGoe(Integer ageGoe) {
